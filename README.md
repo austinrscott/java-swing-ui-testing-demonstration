@@ -4,7 +4,7 @@ This project demonstrates how to structure Swing UIs for testability, how to moc
 both unit and robot-driven UI tests.
 
 ## Requirements
-
+- Python 3.7+
 - JDK 21+
     - You can install on Ubuntu with `sudo apt update && sudo apt install -y openjdk-21-jdk`
 - Apache Maven 3.6.3 (older versions might work, but I haven't tested them)
