@@ -2,10 +2,28 @@ package com.example;
 
 import java.util.Objects;
 
+/**
+ * Pure calculation logic for a trio of integers (A, B, C) that must always sum to a fixed total.
+ * - No Swing, no threading, no I/O: easy to unit test.
+ * - Deterministic policy (first iteration):
+ *   * Edit A  -> adjust B, keep C
+ *   * Edit B  -> adjust C, keep A
+ *   * Edit C  -> adjust A, keep B
+ * - Values are clamped to be non-negative and never exceed the total.
+ *
+ * Teaching points:
+ * - Keep business rules separate from the UI to test quickly and deterministically.
+ * - Return immutable value objects (Values) to simplify reasoning and equality checks.
+ */
+
 public final class TriadCalculator {
 
     public enum Field { A, B, C }
 
+    /**
+     * Immutable triple of non-negative integers.
+     * Using a tiny value class instead of a Map keeps the code type-safe and self-documenting.
+     */
     public static final class Values {
         public final int a, b, c;
 
@@ -24,15 +42,13 @@ public final class TriadCalculator {
     }
 
     /**
-     * Adjusts the triple so that:
-     * - The edited field is set to the (possibly clamped) new value.
-     * - Exactly one other field is adjusted.
-     * - The remaining field is kept as constant as possible.
-     * Policy:
-     *   A edited -> adjust B, keep C
-     *   B edited -> adjust C, keep A
-     *   C edited -> adjust A, keep B
+     * Adjusts the triple to satisfy A + B + C == total after one field is edited.
+     * - The edited field is clamped to [0, total].
+     * - Exactly one other field is adjusted; the third is kept constant where possible.
+     *
+     * This method contains no UI or threading and is safe for unit testing.
      */
+
     public Values adjust(Values current, Field edited, int newValue, int total) {
         if (total < 0) throw new IllegalArgumentException("total must be >= 0");
         int a = current.a, b = current.b, c = current.c;

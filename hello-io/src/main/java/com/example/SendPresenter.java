@@ -6,6 +6,18 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
+/**
+ * Presenter for the "Send" feature.
+ * Responsibilities:
+ * - Validate form inputs.
+ * - Build a payload (Map) and call RpcClient asynchronously via an injected Executor.
+ * - Report states to the View via Listener callbacks (Idle, Sending, Success, Error).
+ *
+ * Teaching points:
+ * - Dependency inversion: Presenter depends on RpcClient interface, not a concrete XML-RPC library.
+ * - Async by injection: tests can inject a direct executor; app can inject a background pool.
+ * - Errors are surfaced as user-friendly messages; no exceptions leak to the UI.
+ */
 public final class SendPresenter {
 
     public interface Listener {
@@ -29,6 +41,10 @@ public final class SendPresenter {
         listener.onIdle();
     }
 
+    /**
+     * Validates inputs, builds payload, and invokes rpcClient on a background executor.
+     * On completion, emits either onSuccess or onError.
+     */
     public void submit(String userIdText, String amountText) {
         // Validate input
         String userId = userIdText == null ? "" : userIdText.trim();

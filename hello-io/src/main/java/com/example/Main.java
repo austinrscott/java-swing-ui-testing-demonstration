@@ -4,6 +4,17 @@ import javax.swing.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Entry point for manual exploration.
+ * - Hosts each demo in a tab (Triad, Send XMLRPC, Image if added).
+ * - Demonstrates dependency injection at the "edge":
+ *   * Real clients/services (e.g., XML-RPC) for manual runs
+ *   * Mocked/fake clients in tests
+ *
+ * Teaching points:
+ * - Build the UI on the EDT (SwingUtilities.invokeLater).
+ * - Keep long-running work off the EDT (use ExecutorServices).
+ */
 public class Main {
     public static void main(String[] args) {
         // Ensure UI is created on the EDT

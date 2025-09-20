@@ -4,6 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.Executor;
 
+/**
+ * SendPanel: Thin Swing view for submitting form data via SendPresenter.
+ * Responsibilities:
+ * - Build simple form controls and forward user actions to the Presenter.
+ * - Reflect Presenter state (idle/sending/success/error) in the UI.
+ *
+ * Teaching points:
+ * - UI elements have stable names to enable robot/UI tests.
+ * - Business logic lives in SendPresenter; this class remains mostly glue.
+ */
 public class SendPanel extends JPanel {
 
     private final JTextField userIdField = new JTextField(16);

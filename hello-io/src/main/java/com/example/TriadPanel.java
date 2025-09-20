@@ -5,6 +5,18 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 
+/**
+ * TriadPanel: Thin Swing view for the triad demo.
+ * Responsibilities:
+ * - Build the UI and forward user interactions to the Presenter.
+ * - Update UI controls when the Presenter notifies changes.
+ * - Ensure all UI mutations happen on the EDT (uses SwingUtilities.invokeLater).
+ *
+ * Teaching points:
+ * - Components have stable names (setName) for robot/UI testing.
+ * - The guard pattern (beginProgrammaticUpdate/endProgrammaticUpdate) prevents edit loops.
+ * - No business logic here; this class is hard to unit test, but easy to robot-test.
+ */
 public class TriadPanel extends JPanel {
 
     private final JTextField aField = new JTextField(6);

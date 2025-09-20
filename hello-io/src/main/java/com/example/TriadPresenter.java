@@ -3,6 +3,20 @@ package com.example;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+
+/**
+ * Presenter/ViewModel for the triad UI.
+ * Responsibilities:
+ * - Hold current state (total and Values).
+ * - Parse and validate user input (string -> int).
+ * - Call TriadCalculator to enforce constraints.
+ * - Notify the View (Listener) about state changes and validation errors.
+ *
+ * Teaching points:
+ * - MVP/MVVM separation: Presenter has no Swing code; View is thin.
+ * - Prevent UI feedback loops via programmaticUpdate guards.
+ * - Easy to unit test without any UI tooling.
+ */
 public final class TriadPresenter {
 
     public interface Listener {
@@ -27,6 +41,10 @@ public final class TriadPresenter {
         emit(l -> l.onValuesChanged(values));
     }
 
+    /**
+     * Sets the new total and rebalances values deterministically.
+     * Current policy: re-apply A with the same value (clamped) to compute new B/C.
+     */
     public void setTotal(int newTotal) {
         if (newTotal < 0) {
             emit(l -> l.onValidationError(null, "Total must be >= 0"));
@@ -39,6 +57,12 @@ public final class TriadPresenter {
         emit(l -> l.onValuesChanged(values));
     }
 
+    /**
+     * Called by the View when the user edits a specific field.
+     * - Parses the value
+     * - Emits validation errors
+     * - Updates values via the calculator and notifies the View
+     */
     public void onFieldEdited(TriadCalculator.Field field, String text) {
         if (programmaticUpdate) return;
         Integer parsed = parseNonNegativeInt(text);
