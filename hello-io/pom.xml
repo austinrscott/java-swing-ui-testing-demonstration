@@ -58,6 +58,18 @@
             <version>${assertj.swing.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- Apache XML-RPC client for talking to the Python XML-RPC server -->
+        <dependency>
+            <groupId>org.apache.xmlrpc</groupId>
+            <artifactId>xmlrpc-client</artifactId>
+            <version>3.1.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.xmlrpc</groupId>
+            <artifactId>xmlrpc-common</artifactId>
+            <version>3.1.3</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -76,6 +88,10 @@
                     <systemPropertyVariables>
                         <java.awt.headless>false</java.awt.headless>
                     </systemPropertyVariables>
+                    <argLine>
+                        --add-opens java.base/java.util=ALL-UNNAMED
+                        -XX:+EnableDynamicAgentLoading
+                    </argLine>
                 </configuration>
             </plugin>
         </plugins>
